@@ -1,29 +1,29 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 
 const tasks = [
     {
         id: 1,
-        task: 'Homapage',
+        name: 'Homapage',
         level: 'High'
     },
     {
         id: 2,
-        task: 'Catalog',
+        name: 'Catalog',
         level: 'Normal'
     },
     {
         id: 3,
-        task: 'Product',
+        name: 'Product',
         level: 'Low'
     }
 ]
 
-const listTask = tasks.map((item) => {
+const listTask = tasks.map((task) => {
     return (
-        <tr key={item.id}>
-            <th scope="row">{item.id}</th>
-            <td>{item.task}</td>
-            <td>{item.level}</td>
+        <tr key={task.id}>
+            <th scope="row">{task.id}</th>
+            <td>{task.name}</td>
+            <td><span className="badge badge-success">{task.level}</span></td>
             <td>
                 <button className="btn btn-sm btn-warning" type="button">Edit</button>
                 <button className="btn btn-sm btn-danger ml-sm-2" type="button">Remove</button>
