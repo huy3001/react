@@ -2,6 +2,13 @@ import React, { Component } from 'react';
 import Task from './task';
 
 class TaskList extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            tasks: this.props.list
+        }
+    }
+
     render() {
         return (
             <div className="list mt-4">
@@ -14,7 +21,7 @@ class TaskList extends Component {
                             <th scope="col">Action</th>
                         </tr>
                     </thead>
-                    <Task/>
+                    <Task tasks={this.state.tasks}/>
                 </table>
             </div>
         )

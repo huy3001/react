@@ -3,6 +3,13 @@ import SearchForm from './search';
 import Sort from './sort';
 import AddTask from './add';
 class Control extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            
+        }
+    }
+
     render() {
         return (
             <div className="control">

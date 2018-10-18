@@ -13,14 +13,59 @@ function Title(props) {
 }
 
 class ToDoList extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            toDoList: [
+                {
+                    id: 1,
+                    name: 'Homapage',
+                    level: 3 
+                },
+                {
+                    id: 2,
+                    name: 'Catalog',
+                    level: 2
+                },
+                {
+                    id: 3,
+                    name: 'Product',
+                    level: 1 // 1 - Low, 2 - Normal, 3 - High
+                }
+            ],
+            searchStr: ''
+        }
+    }
+
+    handleSearch = (value) => {
+        this.setState({
+            searchStr: value
+        });
+    }
+
     render() {
+        let originList = this.state.toDoList;
+        let list = [];
+        const search = this.state.searchStr;
+
+        if(search.length) {
+            originList.forEach((item) => {
+                if(item.name.toLowerCase().indexOf(search) !== -1) {
+                    list.push(item);
+                }
+            })
+        }
+        else {
+            list = originList;
+        }
+
         return (
             <div className="container">
                 <Title text="React Exercise - To Do List"/>
 
-                <Control/>
+                <Control onClickSearch={this.handleSearch}/>
 
-                <TaskList/>
+                <TaskList list={this.state.toDoList}/>
             </div>
         )
     }
