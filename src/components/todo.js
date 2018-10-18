@@ -19,7 +19,7 @@ class ToDoList extends Component {
             toDoList: [
                 {
                     id: 1,
-                    name: 'Homapage',
+                    name: 'Homepage',
                     level: 3 
                 },
                 {
@@ -48,7 +48,7 @@ class ToDoList extends Component {
         let list = [];
         const search = this.state.searchStr;
 
-        if(search.length) {
+        if(search.length > 0) {
             originList.forEach((item) => {
                 if(item.name.toLowerCase().indexOf(search) !== -1) {
                     list.push(item);
@@ -59,13 +59,15 @@ class ToDoList extends Component {
             list = originList;
         }
 
+        console.log(list);
+
         return (
             <div className="container">
                 <Title text="React Exercise - To Do List"/>
 
                 <Control onClickSearch={this.handleSearch}/>
 
-                <TaskList list={this.state.toDoList}/>
+                <TaskList list={list}/>
             </div>
         )
     }
