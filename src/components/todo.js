@@ -33,6 +33,10 @@ class ToDoList extends Component {
                     level: 1 // 1 - Low, 2 - Normal, 3 - High
                 }
             ],
+            sortOption: {
+                item: '',
+                direction: ''
+            },
             searchStr: ''
         }
     }
@@ -40,7 +44,36 @@ class ToDoList extends Component {
     handleSearch = (value) => {
         this.setState({
             searchStr: value
-        });
+        })
+    }
+
+    handleSort = (item, direction) => {
+        this.setState({
+            sortOption: {
+                item: item,
+                direction: direction
+            }
+        })
+    }
+
+    handleCompare = (item, order) => {
+        if(typeof item === 'string') {
+            if(order === 'asc') {
+                
+            }
+            else {
+                
+            }    
+        }
+
+        if(Number.isInteger(item)) {
+            if(order === 'asc') {
+               
+            }
+            else {
+               
+            }    
+        }
     }
 
     render() {
@@ -48,7 +81,7 @@ class ToDoList extends Component {
         let list = [];
         const search = this.state.searchStr;
 
-        if(search.length > 0) {
+        if(search.length) {
             originList.forEach((item) => {
                 if(item.name.toLowerCase().indexOf(search) !== -1) {
                     list.push(item);
@@ -58,8 +91,6 @@ class ToDoList extends Component {
         else {
             list = originList;
         }
-
-        console.log(list);
 
         return (
             <div className="container">
