@@ -33,9 +33,31 @@ class ToDoList extends Component {
                     level: 1 // 1 - Low, 2 - Normal, 3 - High
                 }
             ],
-            sortOption: {
+            sortOption: [
+                {
+                    id: 1,
+                    name: 'Name',
+                    order: 'ASC'
+                },
+                {
+                    id: 2,
+                    name: 'Name',
+                    order: 'DESC'
+                },
+                {
+                    id: 3,
+                    name: 'Level',
+                    order: 'ASC'
+                },
+                {
+                    id: 4,
+                    name: 'Level',
+                    order: 'DESC'
+                }
+            ],
+            sort: {
                 item: '',
-                direction: ''
+                order: ''
             },
             searchStr: ''
         }
@@ -47,38 +69,44 @@ class ToDoList extends Component {
         })
     }
 
-    handleSort = (item, direction) => {
+    handleSort = (item, order) => {
         this.setState({
-            sortOption: {
+            sort: {
                 item: item,
-                direction: direction
+                order: order
             }
         })
     }
 
-    handleCompare = (item, order) => {
-        if(typeof item === 'string') {
-            if(order === 'asc') {
-                
+    handleCompare = (item, order = 'asc') => {
+        return function(a, b) {
+            if(!a.hasOwnProperty(item) || !b.hasOwnProperty(item)) {
+                // property doesn't exist on either object
+                return 0; 
             }
-            else {
-                
-            }    
-        }
 
-        if(Number.isInteger(item)) {
-            if(order === 'asc') {
-               
+            const varA = (typeof a[item] === 'string') ? a[item].toLowerCase() : a[item];
+            const varB = (typeof b[item] === 'string') ? b[item].toLowerCase() : b[item];
+
+            let comparison = 0;
+
+            if (varA > varB) {
+                comparison = 1;
+            } else if (varA < varB) {
+                comparison = -1;
             }
-            else {
-               
-            }    
+
+            return (
+                (order === 'desc') ? (comparison * -1) : comparison
+            );
         }
     }
 
     render() {
         let originList = this.state.toDoList;
         let list = [];
+        let sortItem = this.state.sort.item;
+        let sortOrder = this.state.sort.order;
         const search = this.state.searchStr;
 
         if(search.length) {
@@ -87,16 +115,17 @@ class ToDoList extends Component {
                     list.push(item);
                 }
             })
-        }
-        else {
+        } else {
             list = originList;
         }
+
+        list = originList.sort(this.handleCompare(sortItem, sortOrder));
 
         return (
             <div className="container">
                 <Title text="React Exercise - To Do List"/>
 
-                <Control onClickSearch={this.handleSearch}/>
+                <Control onClickSearch={this.handleSearch} sortOption={this.state.sortOption} onClickSort={this.handleSort}/>
 
                 <TaskList list={list}/>
             </div>

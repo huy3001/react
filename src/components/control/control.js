@@ -11,7 +11,7 @@ class Control extends Component {
                         <SearchForm onClickGo={this.props.onClickSearch}/>
                     </div>
                     <div className="col-4">
-                        <Sort/>
+                        <Sort sortList={this.props.sortOption} onClickOption={this.props.onClickSort}/>
                     </div>
                     <div className="col-4">
                         <AddTask/>

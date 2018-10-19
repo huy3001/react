@@ -4,28 +4,10 @@ class Sort extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            sortOption: [
-                {
-                    id: 1,
-                    name: 'Name',
-                    direction: 'ASC'
-                },
-                {
-                    id: 2,
-                    name: 'Name',
-                    direction: 'DESC'
-                },
-                {
-                    id: 3,
-                    name: 'Level',
-                    direction: 'ASC'
-                },
-                {
-                    id: 4,
-                    name: 'Level',
-                    direction: 'DESC'
-                }
-            ],
+            sort: {
+                item: '',
+                order: ''
+            },
             isActive: ''
         }
     }
@@ -33,19 +15,26 @@ class Sort extends Component {
     handleSortOption = (event) => {
         event.preventDefault();
         this.setState({
+            sort: {
+                item: event.target.getAttribute('data-name').toLowerCase(),
+                order: event.target.getAttribute('data-order').toLowerCase()
+            },
             isActive: event.target.getAttribute('href')
         });
+        setTimeout(() => {
+            this.props.onClickOption(this.state.sort.item, this.state.sort.order);
+        }, 100);
     }
 
     render() {
-        let sortList = this.state.sortOption;
+        let sortList = this.props.sortList;
         let sortActive = 'Name - ASC';
         const activeItem = this.state.isActive;
 
         if(activeItem.length) {
             sortList.forEach((item) => {
                 if(item.id === parseInt(activeItem)) {
-                    sortActive = item.name + ' - ' + item.direction;
+                    sortActive = item.name + ' - ' + item.order;
                 }
             })
         }
@@ -58,13 +47,9 @@ class Sort extends Component {
                         <span className="badge badge-light mr-sm-2">{sortActive}</span>
                     </button>
                     <div className="dropdown-menu">
-                        {/* <a className="dropdown-item" href="#" onClick={this.handleSortOption}>Name - ASC</a>
-                        <a className="dropdown-item" href="#">Name - DESC</a>
-                        <a className="dropdown-item" href="#">Level - ASC</a>
-                        <a className="dropdown-item" href="#">Level - DESC</a> */}
                         {
                             sortList.map((sort) => 
-                                <a key={sort.id} className="dropdown-item" href={sort.id} onClick={this.handleSortOption}>{sort.name} - {sort.direction}</a>
+                                <a key={sort.id} className="dropdown-item" href={sort.id} data-name={sort.name} data-order={sort.order} onClick={this.handleSortOption}>{sort.name} - {sort.order}</a>
                             )
                         }
                     </div>
