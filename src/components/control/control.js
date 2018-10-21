@@ -14,7 +14,7 @@ class Control extends Component {
                         <Sort sortList={this.props.sortOption} onClickOption={this.props.onClickSort}/>
                     </div>
                     <div className="col-4">
-                        <AddTask/>
+                        <AddTask onClickSave={this.props.onClickAddTask}/>
                     </div>
                 </div>
             </div>

@@ -56,6 +56,11 @@ class ToDoList extends Component {
                     order: 'DESC'
                 }
             ],
+            task: {
+                id: '',
+                name: '',
+                level: ''
+            },
             sort: {
                 item: '',
                 order: ''
@@ -73,6 +78,16 @@ class ToDoList extends Component {
     handleReset = (value) => {
         this.setState({
             searchStr: value
+        })
+    }
+
+    handleAddTask = (id, name, level) => {
+        this.setState({
+            task: {
+                id: id,
+                name: name,
+                level: level
+            }
         })
     }
 
@@ -112,9 +127,21 @@ class ToDoList extends Component {
     render() {
         let originList = this.state.toDoList;
         let list = [];
+        let taskId = this.state.task.id;
+        let newTask = {
+            id: this.state.task.id,
+            name: this.state.task.name,
+            level: this.state.task.level
+        }
         let sortItem = this.state.sort.item;
         let sortOrder = this.state.sort.order;
         const search = this.state.searchStr;
+
+        if(taskId !== '') {
+            list = originList.concat(newTask);
+        } else {
+            list = originList;
+        }
 
         if(sortItem.length) {
             list = originList.sort(this.handleCompare(sortItem, sortOrder));
@@ -134,7 +161,7 @@ class ToDoList extends Component {
             <div className="container">
                 <Title text="React Exercise - To Do List"/>
 
-                <Control onClickSearch={this.handleSearch} onClickReset={this.handleReset} sortOption={this.state.sortOption} onClickSort={this.handleSort}/>
+                <Control onClickSearch={this.handleSearch} onClickReset={this.handleReset} sortOption={this.state.sortOption} onClickSort={this.handleSort} onClickAddTask={this.handleAddTask}/>
 
                 <TaskList list={list}/>
             </div>
