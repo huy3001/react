@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {filter} from 'lodash';
 import Control from './control/control';
 import TaskList from './list/list';
 import '../css/style.css';
@@ -69,6 +70,12 @@ class ToDoList extends Component {
         })
     }
 
+    handleReset = (value) => {
+        this.setState({
+            searchStr: value
+        })
+    }
+
     handleSort = (item, order) => {
         this.setState({
             sort: {
@@ -109,23 +116,25 @@ class ToDoList extends Component {
         let sortOrder = this.state.sort.order;
         const search = this.state.searchStr;
 
+        if(sortItem.length) {
+            list = originList.sort(this.handleCompare(sortItem, sortOrder));
+        } else {
+            list = originList;
+        }
+
         if(search.length) {
-            originList.forEach((item) => {
-                if(item.name.toLowerCase().indexOf(search) !== -1) {
-                    list.push(item);
-                }
+            list = filter(originList, (item) => {
+                return item.name.toLowerCase().indexOf(search) !== -1;
             })
         } else {
             list = originList;
         }
 
-        list = originList.sort(this.handleCompare(sortItem, sortOrder));
-
         return (
             <div className="container">
                 <Title text="React Exercise - To Do List"/>
 
-                <Control onClickSearch={this.handleSearch} sortOption={this.state.sortOption} onClickSort={this.handleSort}/>
+                <Control onClickSearch={this.handleSearch} onClickReset={this.handleReset} sortOption={this.state.sortOption} onClickSort={this.handleSort}/>
 
                 <TaskList list={list}/>
             </div>

@@ -4,7 +4,7 @@ class AddTask extends Component {
     render() {
         return (
             <div className="action text-right">
-                <button className="btn btn-secondary" type="button">Add Task</button>
+                <button className="btn btn-success" type="button">Add Task</button>
             </div>
         )
     }

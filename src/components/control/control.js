@@ -8,7 +8,7 @@ class Control extends Component {
             <div className="control">
                 <div className="row">
                     <div className="col-4">
-                        <SearchForm onClickGo={this.props.onClickSearch}/>
+                        <SearchForm onClickGo={this.props.onClickSearch} onClickReset={this.props.onClickReset}/>
                     </div>
                     <div className="col-4">
                         <Sort sortList={this.props.sortOption} onClickOption={this.props.onClickSort}/>
