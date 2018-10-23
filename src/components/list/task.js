@@ -29,7 +29,7 @@ class Task extends Component {
                             <td>{task.name}</td>
                             <td>{this.levelInfo(task.level)}</td>
                             <td>
-                                <button className="btn btn-sm btn-warning" type="button">Edit</button>
+                                <button className="btn btn-sm btn-warning" type="button" data-edit={task.id}>Edit</button>
                                 <button className="btn btn-sm btn-danger ml-sm-2" type="button" data-remove={task.id} onClick={this.handleRemove}>Remove</button>
                             </td>
                         </tr>

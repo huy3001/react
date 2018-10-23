@@ -202,7 +202,7 @@ class ToDoList extends Component {
 
                 <Control onClickSearch={this.handleSearch} onClickReset={this.handleReset} sortOption={this.state.sortOption} onClickSort={this.handleSort} onClickAddTask={this.handleAddTask}/>
 
-                <TaskList list={list} onClickRemove={this.handleRemoveTask}/>
+                <TaskList list={list} onClickHeading={this.handleSort} onClickRemove={this.handleRemoveTask}/>
             </div>
         )
     }
