@@ -12,6 +12,11 @@ class Task extends Component {
         }
     }
 
+    handleRemove = (event) => {
+        let selectedId = event.target.getAttribute('data-remove');
+        this.props.onClickRemove(parseInt(selectedId));
+    }
+
     render() {
         let tasks = this.props.tasks;
 
@@ -25,7 +30,7 @@ class Task extends Component {
                             <td>{this.levelInfo(task.level)}</td>
                             <td>
                                 <button className="btn btn-sm btn-warning" type="button">Edit</button>
-                                <button className="btn btn-sm btn-danger ml-sm-2" type="button">Remove</button>
+                                <button className="btn btn-sm btn-danger ml-sm-2" type="button" data-remove={task.id} onClick={this.handleRemove}>Remove</button>
                             </td>
                         </tr>
                     )

@@ -14,7 +14,7 @@ class TaskList extends Component {
                             <th scope="col">Action</th>
                         </tr>
                     </thead>
-                    <Task tasks={this.props.list}/>
+                    <Task tasks={this.props.list} onClickRemove={this.props.onClickRemove}/>
                 </table>
             </div>
         )

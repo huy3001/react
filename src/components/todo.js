@@ -81,19 +81,44 @@ class ToDoList extends Component {
         })
     }
 
-    handleAddTask = (id, name, level) => {
-        this.setState({
+    handleAddTask = async (name, level) => {
+        // Copy current toDoList
+        const currentList = [...this.state.toDoList];
+
+        // Set state for new task
+        await this.setState({
             task: {
-                id: id,
+                id: this.state.toDoList.length + 1,
                 name: name,
                 level: level
             }
         })
-        setTimeout(() => {
-            this.setState({
-                toDoList: concat(this.state.toDoList, this.state.task)
-            })
-        }, 100)
+
+        // Set state to update new toDoList
+        await this.setState({
+            toDoList: concat(currentList, this.state.task)
+        })
+
+        // Save new toDoList to localStorage
+        await localStorage.setItem('newList', JSON.stringify(this.state.toDoList));
+    }
+
+    handleRemoveTask = async (id) => {
+        // Copy current toDoList
+        const currentList = [...this.state.toDoList];
+
+        // Filter updated list after remove task
+        let updatedList = filter(currentList, (item) => {
+            return item.id !== id;
+        });
+
+        // Set state to update toDoList by UpdatedList
+        await this.setState({
+            toDoList: updatedList
+        })
+
+        // Save updated toDoList to localStorage
+        await localStorage.setItem('updatedList', JSON.stringify(this.state.toDoList));
     }
 
     handleSort = (item, order) => {
@@ -129,8 +154,32 @@ class ToDoList extends Component {
         }
     }
 
+    componentDidMount() {
+        if (localStorage.hasOwnProperty('newList')) {
+            // Get new toDoList from localStorage
+            let newList = localStorage.getItem('newList');
+            newList = JSON.parse(newList);
+
+            // Update new toDoList
+            this.setState({
+                toDoList: newList
+            });
+        }
+
+        if (localStorage.hasOwnProperty('updatedList')) {
+            // Get updated toDoList from localStorage
+            let updatedList = localStorage.getItem('updatedList');
+            updatedList = JSON.parse(updatedList);
+
+            // Update new toDoList
+            this.setState({
+                toDoList: updatedList
+            });
+        }
+    }
+
     render() {
-        let list = this.state.toDoList;
+        let list = [...this.state.toDoList]; // Copy current toDoList
         let sortItem = this.state.sort.item;
         let sortOrder = this.state.sort.order;
         const search = this.state.searchStr;
@@ -153,7 +202,7 @@ class ToDoList extends Component {
 
                 <Control onClickSearch={this.handleSearch} onClickReset={this.handleReset} sortOption={this.state.sortOption} onClickSort={this.handleSort} onClickAddTask={this.handleAddTask}/>
 
-                <TaskList list={list}/>
+                <TaskList list={list} onClickRemove={this.handleRemoveTask}/>
             </div>
         )
     }

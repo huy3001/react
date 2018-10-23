@@ -4,26 +4,16 @@ class AddTask extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            taskId: '',
             taskName: '',
             taskLevel: ''
         }
     }
 
-    handleSaveButton = () => {
-        this.props.onClickSave(this.state.taskId, this.state.taskName, this.state.taskLevel);
-        setTimeout(() => {
-            this.setState({
-                taskId: '',
-                taskName: '',
-                taskLevel: ''
-            })
-        }, 100);
-    }
-
-    handleChangeId = (event) => {
-        this.setState({
-            taskId: event.target.value
+    handleSaveButton = async () => {
+        await this.props.onClickSave(this.state.taskName, this.state.taskLevel);
+        await this.setState({
+            taskName: '',
+            taskLevel: ''
         })
     }
 
@@ -35,7 +25,7 @@ class AddTask extends Component {
 
     handleChangeLevel = (event) => {
         this.setState({
-            taskLevel: event.target.value
+            taskLevel: parseInt(event.target.value)
         })
     }
 
@@ -57,10 +47,6 @@ class AddTask extends Component {
                             <div className="modal-body">
                                 <form>
                                     <div className="form-group">
-                                        <label htmlFor="taskId">Task Id</label>
-                                        <input type="number" className="form-control" id="taskId" min="1" placeholder="Id" value={this.state.taskId} onChange={this.handleChangeId}/>
-                                    </div>
-                                    <div className="form-group">
                                         <label htmlFor="taskName">Task Name</label>
                                         <input type="text" className="form-control" id="taskName" placeholder="Name" value={this.state.taskName} onChange={this.handleChangeName}/>
                                     </div>
@@ -72,8 +58,7 @@ class AddTask extends Component {
                                 </form>
                             </div>
                             <div className="modal-footer">
-                                <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <button type="button" className="btn btn-primary" onClick={this.handleSaveButton}>Save</button>
+                                <button type="button" className="btn btn-primary" data-dismiss="modal" onClick={this.handleSaveButton}>Save</button>
                             </div>
                         </div>
                     </div>
