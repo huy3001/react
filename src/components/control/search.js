@@ -13,20 +13,18 @@ class SearchForm extends Component {
         this.props.onClickGo(this.state.searchStr);
     }
 
-    handleResetButton = () => {
-        this.setState({
+    handleResetButton = async () => {
+        await this.setState({
             inputValue: '',
             searchStr: ''
         })
-        setTimeout(() => {
-            this.props.onClickReset(this.state.searchStr);
-        }, 100);
+        await this.props.onClickReset(this.state.searchStr);
     }
 
     handleChangeInput = (event) => {
         this.setState({
             inputValue: event.target.value,
-            searchStr: event.target.value
+            searchStr: event.target.value.toLowerCase()
         })
     }
 

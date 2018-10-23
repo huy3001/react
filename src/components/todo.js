@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {filter} from 'lodash';
+import {filter, concat} from 'lodash';
 import Control from './control/control';
 import TaskList from './list/list';
 import '../css/style.css';
@@ -89,6 +89,11 @@ class ToDoList extends Component {
                 level: level
             }
         })
+        setTimeout(() => {
+            this.setState({
+                toDoList: concat(this.state.toDoList, this.state.task)
+            })
+        }, 100)
     }
 
     handleSort = (item, order) => {
@@ -125,36 +130,21 @@ class ToDoList extends Component {
     }
 
     render() {
-        let originList = this.state.toDoList;
-        let list = [];
-        let taskId = this.state.task.id;
-        let newTask = {
-            id: this.state.task.id,
-            name: this.state.task.name,
-            level: this.state.task.level
-        }
+        let list = this.state.toDoList;
         let sortItem = this.state.sort.item;
         let sortOrder = this.state.sort.order;
         const search = this.state.searchStr;
 
-        if(taskId !== '') {
-            list = originList.concat(newTask);
-        } else {
-            list = originList;
-        }
-
-        if(sortItem.length) {
-            list = originList.sort(this.handleCompare(sortItem, sortOrder));
-        } else {
-            list = originList;
-        }
-
+        // Filter the list when have a search string 
         if(search.length) {
-            list = filter(originList, (item) => {
+            list = filter(list, (item) => {
                 return item.name.toLowerCase().indexOf(search) !== -1;
             })
-        } else {
-            list = originList;
+        }
+
+        // Sort the list when select a sort option
+        if(sortItem.length) {
+            list = list.sort(this.handleCompare(sortItem, sortOrder));
         }
 
         return (

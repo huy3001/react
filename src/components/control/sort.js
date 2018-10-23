@@ -12,18 +12,16 @@ class Sort extends Component {
         }
     }
 
-    handleSortOption = (event) => {
+    handleSortOption = async (event) => {
         event.preventDefault();
-        this.setState({
+        await this.setState({
             sort: {
                 item: event.target.getAttribute('data-name').toLowerCase(),
                 order: event.target.getAttribute('data-order').toLowerCase()
             },
             isActive: event.target.getAttribute('href')
         });
-        setTimeout(() => {
-            this.props.onClickOption(this.state.sort.item, this.state.sort.order);
-        }, 100);
+        await this.props.onClickOption(this.state.sort.item, this.state.sort.order);
     }
 
     render() {
