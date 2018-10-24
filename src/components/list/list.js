@@ -51,7 +51,7 @@ class TaskList extends Component {
                             <th scope="col">Action</th>
                         </tr>
                     </thead>
-                    <Task tasks={this.props.list} onClickRemove={this.props.onClickRemove}/>
+                    <Task tasks={this.props.list} onClickEdit={this.props.onClickEdit} onClickRemove={this.props.onClickRemove}/>
                 </table>
             </div>
         )

@@ -103,6 +103,24 @@ class ToDoList extends Component {
         await localStorage.setItem('newList', JSON.stringify(this.state.toDoList));
     }
 
+    handleEditTask = async (id, name, level) => {
+        // Copy current toDoList
+        const currentList = [...this.state.toDoList];
+
+        // Update edited list after edit task
+        let edtedList = currentList.splice();
+
+        // Set state to update toDoList by editedList
+        await this.setState({
+            toDoList: edtedList
+        })
+
+        // Save updated toDoList to localStorage
+        await localStorage.setItem('editedList', JSON.stringify(this.state.toDoList));
+
+        console.log(id +','+ name +','+ level);
+    }
+
     handleRemoveTask = async (id) => {
         // Copy current toDoList
         const currentList = [...this.state.toDoList];
@@ -112,7 +130,7 @@ class ToDoList extends Component {
             return item.id !== id;
         });
 
-        // Set state to update toDoList by UpdatedList
+        // Set state to update toDoList by updatedList
         await this.setState({
             toDoList: updatedList
         })
@@ -166,6 +184,17 @@ class ToDoList extends Component {
             });
         }
 
+        if (localStorage.hasOwnProperty('editedList')) {
+            // Get edited toDoList from localStorage
+            let editedList = localStorage.getItem('editedList');
+            editedList = JSON.parse(editedList);
+
+            // Update new toDoList
+            this.setState({
+                toDoList: editedList
+            });
+        }
+
         if (localStorage.hasOwnProperty('updatedList')) {
             // Get updated toDoList from localStorage
             let updatedList = localStorage.getItem('updatedList');
@@ -202,7 +231,7 @@ class ToDoList extends Component {
 
                 <Control onClickSearch={this.handleSearch} onClickReset={this.handleReset} sortOption={this.state.sortOption} onClickSort={this.handleSort} onClickAddTask={this.handleAddTask}/>
 
-                <TaskList list={list} onClickHeading={this.handleSort} onClickRemove={this.handleRemoveTask}/>
+                <TaskList list={list} onClickHeading={this.handleSort} onClickEdit={this.handleEditTask} onClickRemove={this.handleRemoveTask}/>
             </div>
         )
     }

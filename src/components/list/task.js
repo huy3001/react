@@ -4,6 +4,7 @@ class Task extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            editedId: '',
             editedName: '',
             editedLevel: ''
         }
@@ -21,7 +22,24 @@ class Task extends Component {
     }
 
     handleEdit = (event) => {
-        
+        let selectedId = event.target.getAttribute('data-edit');
+        let selectedName, selectedLevel;
+        let taskList = this.props.tasks;
+
+        if(selectedId.length) {
+            taskList.forEach((item) => {
+                if(item.id === parseInt(selectedId)) {
+                    selectedName = item.name;
+                    selectedLevel = item.level;
+                }
+            })
+        }
+
+        this.setState({
+            editedId: selectedId,
+            editedName: selectedName,
+            editedLevel: selectedLevel
+        })
     }
 
     handleChangeName = (event) => {
@@ -36,6 +54,10 @@ class Task extends Component {
         })
     }
 
+    handleSaveButton = () => {
+        this.props.onClickEdit(parseInt(this.state.editedId), this.state.editedName, this.state.editedLevel);
+    }
+
     handleRemove = (event) => {
         let selectedId = event.target.getAttribute('data-remove');
         this.props.onClickRemove(parseInt(selectedId));
@@ -43,8 +65,6 @@ class Task extends Component {
 
     render() {
         let tasks = this.props.tasks;
-
-        // console.log(tasks);
 
         return (
             <tbody>
@@ -76,17 +96,17 @@ class Task extends Component {
                                         <form>
                                             <div className="form-group">
                                                 <label htmlFor="taskName">Task Name</label>
-                                                <input type="text" className="form-control" id="taskName" placeholder="Name" value="" onChange={this.handleChangeName}/>
+                                                <input type="text" className="form-control" id="taskName" placeholder="Name" value={this.state.editedName} onChange={this.handleChangeName}/>
                                             </div>
                                             <div className="form-group">
                                                 <label htmlFor="taskLevel">Task Level</label>
-                                                <input type="number" className="form-control" id="taskLevel" min="1" max="3" aria-describedby="taskLevelHelp" placeholder="Level" value="" onChange={this.handleChangeLevel}/>
+                                                <input type="number" className="form-control" id="taskLevel" min="1" max="3" aria-describedby="taskLevelHelp" placeholder="Level" value={this.state.editedLevel} onChange={this.handleChangeLevel}/>
                                                 <small id="taskLevelHelp" className="form-text text-muted">We have 3 levels: 1 - Low, 2 - Normal, 3 - High</small>
                                             </div>
                                         </form>
                                     </div>
                                     <div className="modal-footer">
-                                        <button type="button" className="btn btn-primary" data-dismiss="modal" onClick={this.handleEdit}>Save</button>
+                                        <button type="button" className="btn btn-primary" data-dismiss="modal" onClick={this.handleSaveButton}>Save</button>
                                     </div>
                                 </div>
                             </div>
