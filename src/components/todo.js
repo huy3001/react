@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {filter, concat} from 'lodash';
+import {findIndex, filter, concat} from 'lodash';
 import Control from './control/control';
 import TaskList from './list/list';
 import '../css/style.css';
@@ -107,18 +107,30 @@ class ToDoList extends Component {
         // Copy current toDoList
         const currentList = [...this.state.toDoList];
 
+        // Find index of edited task in toDoList
+        let taskIndex = findIndex(currentList, (item) => {
+            return item.id === id;
+        });
+
+        // Set state for edited task
+        await this.setState({
+            task: {
+                id: id,
+                name: name,
+                level: level
+            }
+        })
+
         // Update edited list after edit task
-        let edtedList = currentList.splice();
+        currentList.splice(taskIndex, 1, this.state.task);
 
         // Set state to update toDoList by editedList
         await this.setState({
-            toDoList: edtedList
+            toDoList: currentList
         })
 
         // Save updated toDoList to localStorage
         await localStorage.setItem('editedList', JSON.stringify(this.state.toDoList));
-
-        console.log(id +','+ name +','+ level);
     }
 
     handleRemoveTask = async (id) => {
