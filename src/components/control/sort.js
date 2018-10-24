@@ -4,24 +4,20 @@ class Sort extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            sort: {
-                item: '',
-                order: ''
-            },
             isActive: ''
         }
     }
 
     handleSortOption = async (event) => {
         event.preventDefault();
+        const sortItem = event.target.getAttribute('data-name').toLowerCase();
+        const sortOrder = event.target.getAttribute('data-order').toLowerCase();
+
         await this.setState({
-            sort: {
-                item: event.target.getAttribute('data-name').toLowerCase(),
-                order: event.target.getAttribute('data-order').toLowerCase()
-            },
             isActive: event.target.getAttribute('href')
         });
-        await this.props.onClickOption(this.state.sort.item, this.state.sort.order);
+
+        await this.props.onClickOption(sortItem, sortOrder);
     }
 
     render() {
