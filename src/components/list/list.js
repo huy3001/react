@@ -5,27 +5,38 @@ class TaskList extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            activeOrder: 'asc',
-            activeState: -1
+            nameOrder: 'asc',
+            levelOrder: 'asc'
         }
     }
 
-    handleSortOption = async (event) => {
+    handleSortName = async (event) => {
         const sortItem = event.target.getAttribute('data').toLowerCase();
         const sortOrder = event.target.getAttribute('title').toLowerCase();
-        let active = this.state.activeState;
-        active = -active;
+        let nameActive = this.state.nameOrder;
 
         await this.setState({
-            activeOrder: active === -1 ? 'asc' : 'desc',
-            activeState: active
+            nameOrder: nameActive === 'asc' ? 'desc' : 'asc',
+        });
+        
+        await this.props.onClickHeading(sortItem, sortOrder);
+    }
+
+    handleSortLevel = async (event) => {
+        const sortItem = event.target.getAttribute('data').toLowerCase();
+        const sortOrder = event.target.getAttribute('title').toLowerCase();
+        let levelActive = this.state.levelOrder;
+
+        await this.setState({
+            levelOrder: levelActive === 'asc' ? 'desc' : 'asc'
         });
         
         await this.props.onClickHeading(sortItem, sortOrder);
     }
 
     render() {
-        let active  = this.state.activeState;
+        let nameActive = this.state.nameOrder;
+        let levelActive = this.state.levelOrder;
         const downArrow = '\u{02193}';
         const upArrow = '\u{02191}';
 
@@ -35,8 +46,8 @@ class TaskList extends Component {
                     <thead className="thead-dark">
                         <tr>
                             <th scope="col">ID</th>
-                            <th scope="col" title={this.state.activeOrder} data="name" onClick={this.handleSortOption}>Task {active === -1 ? upArrow : downArrow}</th>
-                            <th scope="col" title={this.state.activeOrder} data="level" onClick={this.handleSortOption}>Level {active === -1 ? upArrow : downArrow}</th>
+                            <th scope="col" title={this.state.nameOrder} data="name" onClick={this.handleSortName}>Task {nameActive === 'asc' ? upArrow : downArrow}</th>
+                            <th scope="col" title={this.state.levelOrder} data="level" onClick={this.handleSortLevel}>Level {levelActive === 'asc' ? upArrow : downArrow}</th>
                             <th scope="col">Action</th>
                         </tr>
                     </thead>
